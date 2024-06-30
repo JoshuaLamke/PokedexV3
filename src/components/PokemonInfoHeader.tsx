@@ -56,13 +56,13 @@ const PokemonInfoHeader = ({
   useEffect(() => {
     setFlavText(engTextEntries[0].flavor_text);
     setVersion(engTextEntries[0].version.name);
-  }, []);
+  }, [engTextEntries, setFlavText, setVersion]);
 
   return (
     <div className="mb-4">
       <div className="w-full grid grid-cols-2 sm:grid-cols-3 p-4 border-b-gray-300 border-b mb-4">
         <div className="order-1 sm:order-2 mb-2 flex justify-center col-span-2 sm:col-span-1">
-          {!!engTextEntries.length ? (
+          {engTextEntries.length ? (
             <Select
               label="Game Version"
               onChange={(version) => {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import useVersions from "../hooks/useVersions";
 import { PokemonInfo, SpeciesDetails } from "../types";
 import Spinner from "./Spinner";
@@ -32,36 +32,34 @@ const MovesSection = ({ data, speciesData, version }: Props) => {
 
   const moveLearnMethodsMap = { All: "all" } as Record<string, string>;
 
-  const moves = useMemo(() => {
-    return data.moves.reduce((acc, curr) => {
-      const moveInfo = curr.version_group_details.find(
-        (details) => details.version_group.name === versionToGroupMap[version]
-      );
+  const moves = data.moves.reduce((acc, curr) => {
+    const moveInfo = curr.version_group_details.find(
+      (details) => details.version_group.name === versionToGroupMap[version]
+    );
 
-      if (!moveInfo) {
-        return acc;
-      }
+    if (!moveInfo) {
+      return acc;
+    }
 
-      moveLearnMethodsMap[startCase(moveInfo.move_learn_method.name)] =
-        moveInfo.move_learn_method.name;
+    moveLearnMethodsMap[startCase(moveInfo.move_learn_method.name)] =
+      moveInfo.move_learn_method.name;
 
-      if (
-        moveInfo.move_learn_method.name !== selectedMethod &&
-        selectedMethod !== "all"
-      ) {
-        return acc;
-      }
+    if (
+      moveInfo.move_learn_method.name !== selectedMethod &&
+      selectedMethod !== "all"
+    ) {
+      return acc;
+    }
 
-      return [
-        ...acc,
-        {
-          name: curr.move.name,
-          level: moveInfo.level_learned_at,
-          learnMethod: moveInfo.move_learn_method.name,
-        },
-      ].sort((a, b) => a.level - b.level);
-    }, [] as MoveTableData);
-  }, [version, selectedMethod, versions]);
+    return [
+      ...acc,
+      {
+        name: curr.move.name,
+        level: moveInfo.level_learned_at,
+        learnMethod: moveInfo.move_learn_method.name,
+      },
+    ].sort((a, b) => a.level - b.level);
+  }, [] as MoveTableData);
 
   if (versions.some((v) => v.isLoading)) {
     return (

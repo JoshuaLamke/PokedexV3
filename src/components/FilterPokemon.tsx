@@ -49,7 +49,7 @@ const FilterPokemon = ({ originalCards, setCards }: Props) => {
       return true;
     });
     setCards(filteredCards);
-  }, [filters]);
+  }, [filters, setCards, originalCards]);
 
   return (
     <>

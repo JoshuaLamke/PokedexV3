@@ -61,7 +61,7 @@ export const getTypesForMultiplier = (typeStats: Record<string, number>, multipl
 
 export const normalizeSentence = (input: string) => {
   // Use a regular expression to match only alphanumeric characters, spaces, and common punctuation
-  const normalizedString = input.replace(/[^a-zA-Z0-9\s.,!?;:'"()\-]/g, '');
+  const normalizedString = input.replace(/[^a-zA-Z0-9\s.,!?;:'"()-]/g, '');
 
   // Replace multiple spaces with a single space and trim any leading or trailing spaces
   const trimmedString = normalizedString.replace(/\s+/g, ' ').trim();

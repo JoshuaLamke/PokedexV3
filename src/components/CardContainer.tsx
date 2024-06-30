@@ -28,7 +28,7 @@ const CardContainer = ({ cards }: Props) => {
         ...cards.slice(filteredCards.length, filteredCards.length + increment),
       ]);
     }
-  }, [entry]);
+  }, [entry, cards, filteredCards]);
 
   return (
     <div className="grid grid-flow-row grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">

@@ -5,7 +5,7 @@ import Moon from "../assets/moon.svg?react";
 import Swap from "../assets/swap.svg?react";
 import OR from "../assets/evoReqOr.png";
 import startCase from "lodash/startCase";
-import useNavigateSmooth from "../hooks/useNavigateSmooth";
+import EvoReqLink from "../components/EvoReqLink";
 
 export const replaceName = (
   replaceName: string,
@@ -202,22 +202,6 @@ const getIdFromSpecies = (url: string) => {
   return match ? match[1] : null;
 };
 
-const EvoReqLink = ({ path, name }: { path: string; name: string }) => {
-  const handleNavigate = useNavigateSmooth();
-  return (
-    <span
-      className="text-green-700 hover:text-green-500 hover:scale-105"
-      role="button"
-      onClick={handleNavigate(path, {
-        name,
-        path,
-      })}
-    >
-      {name}
-    </span>
-  );
-};
-
 const getTextFromRequirement = (pokemonRequirement: EvolutionRequirements) => {
   const {
     gender,
@@ -276,7 +260,7 @@ const getTextFromRequirement = (pokemonRequirement: EvolutionRequirements) => {
         )}
         {!!time_of_day && mapTimeOfDayIcon(time_of_day)}
       </div>
-      {!!min_level
+      {min_level
         ? `Reach level ${min_level}`
         : trigger?.name !== "level-up" &&
           mapTriggerName(trigger?.name, !!trade_species)}
