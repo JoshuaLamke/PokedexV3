@@ -1,0 +1,21 @@
+export const typeColors: Record<string, string> = {
+  "Normal": "rgb(146,155,163)",
+  "Fire": "rgb(255,152,63)",
+  "Water": "rgb(51,147,221)",
+  "Grass": "rgb(53,192,74)",
+  "Electric": "rgb(251,210,0)",
+  "Ice": "rgb(75,210,193)",
+  "Fighting": "rgb(225,44,106)",
+  "Poison": "rgb(182,103,207)",
+  "Ground": "rgb(233,115,51)",
+  "Flying": "rgb(138,172,228)",
+  "Psychic": "rgb(255,102,118)",
+  "Bug": "rgb(132,196,0)",
+  "Rock": "rgb(201,183,135)",
+  "Ghost": "rgb(75,106,179)",
+  "Dark": "rgb(91,83,102)",
+  "Dragon": "rgb(0,111,202)",
+  "Steel": "rgb(90,143,163)",
+  "Fairy": "rgb(251,138,236)",
+  "Stellar": "rgb(64, 20, 185)"
+};
