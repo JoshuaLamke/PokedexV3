@@ -37,7 +37,7 @@ const TypeMovesList = ({ data }: Props) => {
   };
 
   const handleMoveNameFilter = (value: string) => {
-    setMoveNameFilter(value);
+    setMoveNameFilter(value.toLowerCase());
   };
 
   return (
