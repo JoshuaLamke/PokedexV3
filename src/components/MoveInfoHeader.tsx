@@ -50,7 +50,7 @@ const MoveInfoHeader = ({ setFlavText, setVersionGroup, data }: Props) => {
       setFlavText(engTextEntries[0].flavor_text);
       setVersionGroup(engTextEntries[0].version_group.name);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="mb-4">

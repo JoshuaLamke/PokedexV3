@@ -30,10 +30,7 @@ const MovesSection = ({ data, speciesData, version }: Props) => {
     };
   }, {} as Record<string, string>);
 
-  const moveLearnMethodsMap = useMemo(() => ({ All: "all" }), []) as Record<
-    string,
-    string
-  >;
+  const moveLearnMethodsMap = { All: "all" } as Record<string, string>;
 
   const moves = useMemo(() => {
     return data.moves.reduce((acc, curr) => {
@@ -64,13 +61,7 @@ const MovesSection = ({ data, speciesData, version }: Props) => {
         },
       ].sort((a, b) => a.level - b.level);
     }, [] as MoveTableData);
-  }, [
-    version,
-    selectedMethod,
-    data.moves,
-    moveLearnMethodsMap,
-    versionToGroupMap,
-  ]);
+  }, [version, selectedMethod, versions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (versions.some((v) => v.isLoading)) {
     return (
