@@ -20,7 +20,7 @@ const TypeMovesList = ({ data }: Props) => {
   }
 
   const filteredMoves = data.moves.filter((move) =>
-    move.name.includes(moveNameFilter)
+    move.name.includes(moveNameFilter.toLowerCase())
   );
 
   const itemsPerPage = 12;
@@ -37,7 +37,7 @@ const TypeMovesList = ({ data }: Props) => {
   };
 
   const handleMoveNameFilter = (value: string) => {
-    setMoveNameFilter(value.toLowerCase());
+    setMoveNameFilter(value);
   };
 
   return (
