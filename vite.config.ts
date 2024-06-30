@@ -8,5 +8,5 @@ export default defineConfig({
   plugins: [react(), svgr()],
   define: {
     'process.env': process.env
-  }
+  },
 })
