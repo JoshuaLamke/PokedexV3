@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "build:css:dev": "npx tailwindcss -i ./src/tailwind.css -o ./src/output.css --watch",
     "build:css:prod": "npx tailwindcss -i ./src/tailwind.css -o ./src/output.css",
-    "start": "concurrently \"npm run build:css:dev\" \"npm run dev\""
+    "start": "concurrently \"npm run build:css:dev\" \"npm run dev\"",
+    "prepare": "husky"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -23,7 +24,6 @@
     "@tanstack/react-query-persist-client": "^5.40.1",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
-    "husky": "^9.0.11",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -43,6 +43,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "husky": "^9.0.11",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
