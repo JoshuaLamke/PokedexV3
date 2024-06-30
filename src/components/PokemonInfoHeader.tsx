@@ -56,7 +56,7 @@ const PokemonInfoHeader = ({
   useEffect(() => {
     setFlavText(engTextEntries[0].flavor_text);
     setVersion(engTextEntries[0].version.name);
-  }, [engTextEntries, setFlavText, setVersion]);
+  }, []);
 
   return (
     <div className="mb-4">
