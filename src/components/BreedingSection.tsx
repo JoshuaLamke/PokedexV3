@@ -14,8 +14,8 @@ const BreedingSection = ({ speciesData }: Props) => {
         <span>
           {speciesData.gender_rate === -1
             ? "Genderless"
-            : `${(speciesData.gender_rate / 8) * 100}% Male, ${
-                ((8 - speciesData.gender_rate) / 8) * 100
+            : `${((8 - speciesData.gender_rate) / 8) * 100}% Male, ${
+                (speciesData.gender_rate / 8) * 100
               }% Female`}
         </span>
       ),

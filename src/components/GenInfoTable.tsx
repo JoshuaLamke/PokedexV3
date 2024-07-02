@@ -14,6 +14,15 @@ const GenInfoTable = ({ data, speciesData }: Props) => {
   const genInfoTableData: TableRow[] = [
     { header: "Pokemon Number", value: data.id },
     {
+      header: "Generation",
+      value: (
+        <>
+          {startCase(speciesData.generation.name.split("-")[0])}{" "}
+          {speciesData.generation.name.split("-")[1].toUpperCase()}
+        </>
+      ),
+    },
+    {
       header: "Abilities",
       value: (
         <div className="flex flex-col items-start">
