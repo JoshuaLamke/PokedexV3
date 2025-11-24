@@ -16,7 +16,7 @@ const Search = ({ setFilters, nameQuery, inputRef }: Props) => {
     if (inputRef) {
       inputRef.current?.focus();
     }
-  }, [nameQuery]);
+  }, [nameQuery, inputRef]);
 
   // Debounce updating parent filters
   useEffect(() => {
