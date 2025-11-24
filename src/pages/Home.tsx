@@ -1,31 +1,48 @@
-import useCards from "../hooks/useCards";
 import CardContainer from "../components/CardContainer";
-import { useEffect, useRef, useState } from "react";
-import FilterPokemon from "../components/FilterPokemon";
+import { useRef, useState } from "react";
 import LoadingSnom from "../components/LoadingSnom";
 import PokeApi from "../assets/pokeapi.png";
-import useCacheCardObjs from "../hooks/useCacheCardObjs";
 import { POKEMON_TYPES, getImageByType } from "../utils";
 import capitalize from "lodash/capitalize";
 import startCase from "lodash/startCase";
 import useNavigateSmooth from "../hooks/useNavigateSmooth";
 import { Tooltip } from "react-tooltip";
+import useCards, { REGION_RANGES } from "../pokemonData/useCards";
+import AdvancedSearch from "../components/AdvancedSearch";
+import Search from "../components/Search";
 
 const Home = () => {
-  const { data } = useCards();
-  useCacheCardObjs();
-  const [cards, setCards] = useState(data);
-  const ref = useRef<HTMLDivElement>(null);
-  const handleNavigate = useNavigateSmooth();
-  useEffect(() => {
-    setCards(data);
-  }, [data]);
+  // Filter State
+  const [filters, setFilters] = useState({
+    nameQuery: "",
+    idQuery: "",
+    types: [] as string[],
+    regions: [] as (keyof typeof REGION_RANGES)[],
+  });
 
-  if (!data) {
+  const {
+    cards,
+    isLoading,
+    filteredCount,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useCards(filters);
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const handleNavigate = useNavigateSmooth();
+
+  if (isLoading) {
     return <LoadingSnom />;
   }
 
-  if (!data.length) {
+  const noActiveFilters =
+    !filters.idQuery &&
+    !filters.nameQuery &&
+    !filters.regions.length &&
+    !filters.types.length;
+
+  if (!cards.length && noActiveFilters) {
     return (
       <div className="flex p-4 justify-center items-center">
         <h1 className="text-4xl font-bold text-green-700">No Pokemon :(</h1>
@@ -70,14 +87,26 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div ref={ref} className="pt-2 flex justify-center items-center">
-        <FilterPokemon originalCards={data} setCards={setCards} />
+      <div className="pt-2 flex justify-center items-center">
+        {/* Search by name */}
+        <Search
+          setFilters={setFilters}
+          nameQuery={filters.nameQuery}
+          inputRef={searchInputRef}
+        />
+        {/* Advanced search: number, regions, types */}
+        <AdvancedSearch setFilters={setFilters} filters={filters} />
       </div>
-      {cards?.length ? (
-        <CardContainer cards={cards} />
+      {cards.length ? (
+        <CardContainer
+          cards={cards}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
+        />
       ) : (
         <h1 className="text-3xl text-green-700 w-full text-center">
-          No Pokemon :(
+          No Pokémon found ({filteredCount} matches)
         </h1>
       )}
     </>

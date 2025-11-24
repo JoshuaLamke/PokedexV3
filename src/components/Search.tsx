@@ -1,20 +1,33 @@
-import React from "react";
+import React, { RefObject, useEffect, useState } from "react";
 import { Filters } from "../types";
 import { AiOutlineClose } from "react-icons/ai";
 
 interface Props {
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
-  name: string;
+  nameQuery: string;
+  inputRef: RefObject<HTMLInputElement>;
 }
 
-const Search = ({ setFilters, name }: Props) => {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value.toLowerCase();
-    setFilters((filters) => ({ ...filters, name: newName }));
-  };
+const Search = ({ setFilters, nameQuery, inputRef }: Props) => {
+  const [typingValue, setTypingValue] = useState(nameQuery);
+
+  // Focus search if name query changed so user doesnt have to do it
+  useEffect(() => {
+    if (inputRef) {
+      inputRef.current?.focus();
+    }
+  }, [nameQuery]);
+
+  // Debounce updating parent filters
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setFilters((prev) => ({ ...prev, nameQuery: typingValue }));
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [typingValue, setFilters]);
 
   const handleReset = () => {
-    setFilters((filters) => ({ ...filters, name: "" }));
+    setTypingValue("");
   };
 
   return (
@@ -22,12 +35,13 @@ const Search = ({ setFilters, name }: Props) => {
       <div className="relative flex items-center w-full">
         <input
           type="text"
-          value={name}
-          onChange={handleInputChange}
-          placeholder="Search for a pokemon..."
-          className="w-full px-4 py-2 text-gray-700 bg-gray-200 placeholder-gray-700 h-10 rounded ouline-none border-none focus:outline-none"
+          ref={inputRef}
+          value={typingValue}
+          onChange={(e) => setTypingValue(e.target.value.toLowerCase())}
+          placeholder="Search for a Pokémon..."
+          className="w-full px-4 py-2 text-gray-700 bg-gray-200 placeholder-gray-700 h-10 rounded outline-none border-none focus:outline-none"
         />
-        {name && (
+        {typingValue && (
           <AiOutlineClose
             className="absolute right-2 cursor-pointer text-gray-700"
             onClick={handleReset}

@@ -1,3 +1,5 @@
+import { REGION_RANGES } from "./pokemonData/useCards";
+
 export type Card = {
   number: number;
   order: number;
@@ -7,10 +9,10 @@ export type Card = {
 }
 
 export type Filters = {
-  regions: string;
-  number: string;
-  name: string;
-  types: string;
+  nameQuery: string;
+  idQuery: string;
+  types: string[];
+  regions: (keyof typeof REGION_RANGES)[];
 }
 
 export type NameUrl = {

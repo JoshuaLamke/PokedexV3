@@ -17,5 +17,6 @@ export const typeColors: Record<string, string> = {
   "Dragon": "rgb(0,111,202)",
   "Steel": "rgb(90,143,163)",
   "Fairy": "rgb(251,138,236)",
-  "Stellar": "rgb(64, 20, 185)"
+  "Stellar": "rgb(64, 20, 185)",
+  "": "rgb(255, 255, 255)", // If there is no type
 };
