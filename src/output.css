@@ -576,10 +576,6 @@ input[type="number"]::-webkit-inner-spin-button,
   bottom: 0px;
 }
 
-.bottom-10 {
-  bottom: 2.5rem;
-}
-
 .bottom-\[10px\] {
   bottom: 10px;
 }
@@ -644,11 +640,6 @@ input[type="number"]::-webkit-inner-spin-button,
 .mx-3 {
   margin-left: 0.75rem;
   margin-right: 0.75rem;
-}
-
-.mx-4 {
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
 
 .mx-5 {
@@ -804,6 +795,10 @@ input[type="number"]::-webkit-inner-spin-button,
   min-height: 3rem;
 }
 
+.min-h-\[500px\] {
+  min-height: 500px;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -945,22 +940,6 @@ input[type="number"]::-webkit-inner-spin-button,
 
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8,0,1,1);
-  }
-
-  50% {
-    transform: none;
-    animation-timing-function: cubic-bezier(0,0,0.2,1);
-  }
-}
-
-.animate-bounce {
-  animation: bounce 1s infinite;
 }
 
 @keyframes float {
@@ -1599,10 +1578,6 @@ input[type="number"]::-webkit-inner-spin-button,
 .hover\:text-green-700:hover {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity));
-}
-
-.hover\:opacity-70:hover {
-  opacity: 0.7;
 }
 
 .focus\:border-blue-500:focus {

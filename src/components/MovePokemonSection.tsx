@@ -1,7 +1,7 @@
 import useCacheCardObjs from "../hooks/useCacheCardObjs";
 import useCardObjs from "../hooks/useCardObjs";
 import { MoveDetails } from "../types";
-import CardContainer from "./CardContainer";
+// import CardContainer from "./CardContainer";
 
 interface Props {
   data: MoveDetails;
@@ -22,7 +22,8 @@ const MovePokemonSection = ({ data }: Props) => {
       <h6 className="text-xl sm:text-2xl md:text:3xl mb-4">
         Count: {pokemonWithMove.length}
       </h6>
-      <CardContainer cards={pokemonWithMove} />
+      <h6>Coming soon</h6>
+      {/* <CardContainer cards={pokemonWithMove} /> */}
     </div>
   );
 };
