@@ -40,7 +40,7 @@ const CardContainer = ({
   }
 
   return (
-    <div className="grid grid-flow-row grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 min-h-[500px]">
+    <div className="grid grid-flow-row grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
       {cards.map((card, index) => (
         <div
           key={card.number}
