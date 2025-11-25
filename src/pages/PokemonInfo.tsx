@@ -11,10 +11,8 @@ import startCase from "lodash/startCase";
 import GenInfoTable from "../components/GenInfoTable";
 import useSpeciesInfo from "../hooks/useSpeciesInfo";
 import useEvoInfo from "../hooks/useEvoInfo";
-import useCardObjs from "../hooks/useCardObjs";
 import StatsContainer from "../components/StatsContainer";
 import EvolutionChain from "../components/EvolutionChain";
-import useCards from "../hooks/useCards";
 import PokemonInfoHeader from "../components/PokemonInfoHeader";
 import { useState } from "react";
 import TypeEffectivenessSection from "../components/TypeEffectivenessSection";
@@ -28,8 +26,6 @@ import TypeIcon from "../components/TypeIcon";
 
 const PokemonInfo = () => {
   const { name } = useParams();
-  const { data: cardData } = useCards();
-  const cardObjs = useCardObjs();
   const { data } = usePokemonInfo(name!);
   const { data: speciesData } = useSpeciesInfo(data?.species.url, name!);
   const { data: evoData } = useEvoInfo(
@@ -39,21 +35,13 @@ const PokemonInfo = () => {
   const [flavText, setFlavText] = useState("");
   const [version, setVersion] = useState("");
 
-  if (
-    !data ||
-    !speciesData ||
-    !evoData ||
-    !cardObjs.byName ||
-    !cardObjs.byId ||
-    !cardData
-  ) {
+  if (!data || !speciesData || !evoData) {
     return <LoadingSnom />;
   }
 
   return (
     <div className="min-h-screen text-gray-700 mb-10">
       <PokemonInfoHeader
-        cardData={cardData}
         pokemonData={data}
         setFlavText={setFlavText}
         setVersion={setVersion}
@@ -88,12 +76,7 @@ const PokemonInfo = () => {
         </div>
       </div>
       <StatsContainer data={data} />
-      <EvolutionChain
-        evoData={evoData}
-        nameCardObj={cardObjs.byName}
-        idCardObj={cardObjs.byId}
-        name={name!}
-      />
+      <EvolutionChain evoData={evoData} name={name!} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap gap-4">
         <BreedingSection speciesData={speciesData} />
         <TrainingSection speciesData={speciesData} />
@@ -101,7 +84,7 @@ const PokemonInfo = () => {
         <FormsSection speciesData={speciesData} />
       </div>
       <MovesSection data={data} speciesData={speciesData} version={version} />
-      <TypeEffectivenessSection cardsByName={cardObjs.byName!} name={name!} />
+      <TypeEffectivenessSection name={name!} />
       <SpritesSection data={data} />
     </div>
   );

@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { PokemonInfo } from "../types";
 
-export function usePokemonDetail(nameOrId: string | number) {
+export function usePokemonDetail(nameOrId?: string | number) {
   return useQuery({
     queryKey: ["pokemon", nameOrId],
-    queryFn: pokemonDetailQueryFn(nameOrId),
+    queryFn: pokemonDetailQueryFn(nameOrId!),
     staleTime: Infinity,
     gcTime: Infinity,
     enabled: !!nameOrId,

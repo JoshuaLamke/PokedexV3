@@ -1,4 +1,3 @@
-import { Card } from "../types";
 import { calculateAllMultipliers, calculateTypeMatchups } from "../utils";
 import TypeEffectivenessTable from "./TypeEffectivenessTable";
 import Switch from "./Switch";
@@ -7,18 +6,23 @@ import useTypes from "../hooks/useTypes";
 import Spinner from "./Spinner";
 import useCacheTypeMatchups from "../hooks/useCacheTypeMatchups";
 import useTypeMatchups from "../hooks/useTypeMatchups";
+import { usePokemonDetail } from "../pokemonData/usePokemonDetail";
 
 interface Props {
-  cardsByName: Record<string, Card>;
   name: string;
 }
-const TypeEffectivenessSection = ({ cardsByName, name }: Props) => {
+const TypeEffectivenessSection = ({ name }: Props) => {
   const typesResults = useTypes();
   useCacheTypeMatchups();
   const cachedTypeMatchups = useTypeMatchups();
+  const { data: pokemon, isLoading: pokemonIsLoading } = usePokemonDetail(name);
   const [checked, setChecked] = useState(false);
 
-  if (typesResults.some((query) => query.isLoading)) {
+  if (
+    typesResults.some((query) => query.isLoading) ||
+    pokemonIsLoading ||
+    !pokemon
+  ) {
     return (
       <div className="w-full flex justify-center border-t border-b items-center">
         <h3 className="text-green-700 text-3xl sm:text-4xl md:text:5xl my-4 mr-2">
@@ -37,7 +41,7 @@ const TypeEffectivenessSection = ({ cardsByName, name }: Props) => {
 
   const typeMatchups = cachedTypeMatchups ?? calculateTypeMatchups(types);
 
-  const pokemonTypes = cardsByName[name!].types;
+  const pokemonTypes = pokemon.types.map((type) => type.type.name);
   const defenseMultipliers = calculateAllMultipliers(
     pokemonTypes.map((type) => typeMatchups[type].defense)
   );

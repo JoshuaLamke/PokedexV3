@@ -1,6 +1,5 @@
 import CardContainer from "../components/CardContainer";
 import { useRef, useState } from "react";
-import LoadingSnom from "../components/LoadingSnom";
 import PokeApi from "../assets/pokeapi.png";
 import { POKEMON_TYPES, getImageByType } from "../utils";
 import capitalize from "lodash/capitalize";
@@ -10,6 +9,7 @@ import { Tooltip } from "react-tooltip";
 import useCards, { REGION_RANGES } from "../pokemonData/useCards";
 import AdvancedSearch from "../components/AdvancedSearch";
 import Search from "../components/Search";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   // Filter State
@@ -32,23 +32,14 @@ const Home = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const handleNavigate = useNavigateSmooth();
 
-  if (isLoading) {
-    return <LoadingSnom />;
-  }
-
   const noActiveFilters =
     !filters.idQuery &&
     !filters.nameQuery &&
-    !filters.regions.length &&
-    !filters.types.length;
+    filters.regions.length === 0 &&
+    filters.types.length === 0;
 
-  if (!cards.length && noActiveFilters) {
-    return (
-      <div className="flex p-4 justify-center items-center">
-        <h1 className="text-4xl font-bold text-green-700">No Pokemon :(</h1>
-      </div>
-    );
-  }
+  const loading = isLoading || isFetching;
+  const noResults = !cards.length && !loading;
 
   return (
     <>
@@ -87,27 +78,45 @@ const Home = () => {
           </div>
         </div>
       </div>
+
       <div className="pt-2 flex justify-center items-center">
-        {/* Search by name */}
         <Search
           setFilters={setFilters}
           nameQuery={filters.nameQuery}
           inputRef={searchInputRef}
         />
-        {/* Advanced search: number, regions, types */}
         <AdvancedSearch setFilters={setFilters} filters={filters} />
       </div>
-      {cards.length ? (
+
+      {/* Cards */}
+      {!!cards.length && (
         <CardContainer
           cards={cards}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetching={isFetching}
         />
-      ) : (
+      )}
+
+      {/* Spinner (loading initial page OR loading more pages) */}
+      {loading && (
+        <div className="w-full flex justify-center my-3">
+          <Spinner />
+        </div>
+      )}
+
+      {/* No results WITH filters */}
+      {noResults && !noActiveFilters && (
         <h1 className="text-3xl text-green-700 w-full text-center">
           No Pokémon found ({filteredCount} matches)
         </h1>
+      )}
+
+      {/* No Pokémon on initial load (no filters, nothing returned) */}
+      {noResults && noActiveFilters && (
+        <div className="flex p-4 justify-center items-center">
+          <h1 className="text-4xl font-bold text-green-700">No Pokemon :(</h1>
+        </div>
       )}
     </>
   );

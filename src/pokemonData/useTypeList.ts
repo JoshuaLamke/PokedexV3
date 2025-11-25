@@ -9,7 +9,7 @@ import { TypeDetails } from "../types";
 export const useTypeList = (types: string[] = []) => {
   const typeQueries = useQueries({
     queries: types.map((typeName) => ({
-      queryKey: ["type", typeName],
+      queryKey: ["typeList", typeName],
       queryFn: async () => {
         const response = await axios.get<TypeDetails>(`https://pokeapi.co/api/v2/type/${typeName}`);
         // Return an array of Pokémon names for this type

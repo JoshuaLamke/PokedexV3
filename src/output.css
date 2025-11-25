@@ -652,6 +652,11 @@ input[type="number"]::-webkit-inner-spin-button,
   margin-bottom: 0.5rem;
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -793,10 +798,6 @@ input[type="number"]::-webkit-inner-spin-button,
 
 .min-h-12 {
   min-height: 3rem;
-}
-
-.min-h-\[500px\] {
-  min-height: 500px;
 }
 
 .min-h-screen {

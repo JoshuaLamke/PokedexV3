@@ -5,15 +5,16 @@ import {
 } from "react-icons/tb";
 import Select from "./Select";
 import useNavigateSmooth from "../hooks/useNavigateSmooth";
-import { typeColors } from "../utils";
+import { getImageURLFromInfoObj, typeColors } from "../utils";
 import capitalize from "lodash/capitalize";
 import startCase from "lodash/startCase";
 import { useEffect } from "react";
 import Breadcrumbs, { Breadcrumb } from "./Breadcrumbs";
 import { useLocation } from "react-router-dom";
+import { useAllPokemonList } from "../pokemonData/useAllPokemonList";
+import { usePokemonDetail } from "../pokemonData/usePokemonDetail";
 
 interface Props {
-  cardData: Card[];
   pokemonData: PokemonInfo;
   speciesData: SpeciesDetails;
   setFlavText: React.Dispatch<React.SetStateAction<string>>;
@@ -21,7 +22,6 @@ interface Props {
 }
 
 const PokemonInfoHeader = ({
-  cardData,
   pokemonData,
   speciesData,
   setFlavText,
@@ -29,15 +29,7 @@ const PokemonInfoHeader = ({
 }: Props) => {
   const handleNavigate = useNavigateSmooth();
   const location = useLocation();
-  const cardIndex = cardData.findIndex(
-    (card) => card.number === pokemonData.id
-  );
-  const prevCard = cardData[cardIndex - 1]
-    ? cardData[cardIndex - 1]
-    : cardData[cardData.length - 1];
-  const nextCard = cardData[cardIndex + 1]
-    ? cardData[cardIndex + 1]
-    : cardData[0];
+  const { data: pokemonList } = useAllPokemonList();
 
   const engTextEntries = speciesData.flavor_text_entries.filter(
     (entry) => entry.language.name === "en"
@@ -57,6 +49,42 @@ const PokemonInfoHeader = ({
     setFlavText(engTextEntries[0].flavor_text);
     setVersion(engTextEntries[0].version.name);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const pokemonIndex = pokemonList!.findIndex(
+    (pokemon) => pokemon.id === pokemonData.id
+  );
+  const prevPokemonIndex =
+    pokemonIndex - 1 < 0 ? pokemonList!.length - 1 : pokemonIndex - 1;
+  const nextPokemonIndex =
+    pokemonIndex + 1 >= pokemonList!.length ? 0 : pokemonIndex + 1;
+
+  const { data: prevPokemon } = usePokemonDetail(
+    pokemonList?.[prevPokemonIndex].id
+  );
+
+  const { data: nextPokemon } = usePokemonDetail(
+    pokemonList?.[nextPokemonIndex].id
+  );
+
+  if (!prevPokemon || !nextPokemon) {
+    return null;
+  }
+
+  const prevPokemonCard: Card = {
+    name: prevPokemon.name,
+    number: prevPokemon.id,
+    order: prevPokemon.order,
+    types: prevPokemon.types.map((type) => type.type.name),
+    image: getImageURLFromInfoObj(prevPokemon),
+  };
+
+  const nextPokemonCard: Card = {
+    name: nextPokemon.name,
+    number: nextPokemon.id,
+    order: nextPokemon.order,
+    types: nextPokemon.types.map((type) => type.type.name),
+    image: getImageURLFromInfoObj(nextPokemon),
+  };
 
   return (
     <div className="mb-4">
@@ -79,38 +107,40 @@ const PokemonInfoHeader = ({
         <button
           className="text-white rounded-md text-sm xs:text-xl flex items-end order-2 sm:order-1 w-fit"
           style={{
-            color: typeColors[capitalize(prevCard.types[0])],
+            color: typeColors[capitalize(prevPokemonCard.types[0])],
           }}
-          onClick={handleNavigate(`/pokemon/${prevCard.name}`, {
-            name: startCase(prevCard.name),
-            path: `/pokemon/${prevCard.name}`,
+          onClick={handleNavigate(`/pokemon/${prevPokemonCard.name}`, {
+            name: startCase(prevPokemonCard.name),
+            path: `/pokemon/${prevPokemonCard.name}`,
           })}
         >
           <div className="flex items-center">
             <TbPlayerTrackPrevFilled
-              color={typeColors[capitalize(prevCard.types[0])]}
+              color={typeColors[capitalize(prevPokemonCard.types[0])]}
               className="mr-2 size-3 xs:size-5"
             />
-            <div className="mb-1">{startCase(prevCard.name).split(" ")[0]}</div>
+            <div className="mb-1">
+              {startCase(prevPokemonCard.name).split(" ")[0]}
+            </div>
           </div>
         </button>
         <div className="order-3 flex justify-end">
           <button
             className="text-white rounded-md text-sm xs:text-xl flex items-end w-fit"
-            onClick={handleNavigate(`/pokemon/${nextCard.name}`, {
-              name: startCase(nextCard.name),
-              path: `/pokemon/${nextCard.name}`,
+            onClick={handleNavigate(`/pokemon/${nextPokemonCard.name}`, {
+              name: startCase(nextPokemonCard.name),
+              path: `/pokemon/${nextPokemonCard.name}`,
             })}
             style={{
-              color: typeColors[capitalize(nextCard.types[0])],
+              color: typeColors[capitalize(nextPokemonCard.types[0])],
             }}
           >
             <div className="flex items-center">
               <div className="mb-1">
-                {startCase(nextCard.name).split(" ")[0]}
+                {startCase(nextPokemonCard.name).split(" ")[0]}
               </div>
               <TbPlayerTrackNextFilled
-                color={typeColors[capitalize(nextCard.types[0])]}
+                color={typeColors[capitalize(nextPokemonCard.types[0])]}
                 className="ml-2 size-3 xs:size-5"
               />
             </div>

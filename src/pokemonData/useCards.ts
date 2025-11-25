@@ -5,6 +5,7 @@ import { useTypeList } from "./useTypeList";
 import { pokemonDetailQueryFn } from "./usePokemonDetail";
 import { Card } from "../types";
 import { getImageURLFromInfoObj } from "../utils";
+import { useMoveList } from "./useMoveList";
 
 export const REGION_RANGES = {
   "Kanto (1 - 151)": [1, 151],
@@ -23,12 +24,16 @@ export default function useCards(filters: {
   idQuery?: string;
   types?: string[];
   regions?: (keyof typeof REGION_RANGES)[];
+  move?: string;
 }) {
   const queryClient = useQueryClient();
   const { data: allPokemon } = useAllPokemonList();
 
   // Fetch Pokémon names for selected types (supports multiple types)
   const { data: typeFilteredNames, isLoading: typeNamesLoading } = useTypeList(filters.types || []);
+
+  // Fetch Pokémon names for selected move
+  const { data: moveFilteredNames } = useMoveList(filters.move);
 
   const filteredList = useMemo(() => {
     if (!allPokemon) return [];
@@ -63,8 +68,24 @@ export default function useCards(filters: {
       );
     }
 
+    // Move Filter
+    if (filters.move && moveFilteredNames) {
+      result = result.filter((pokemon) => moveFilteredNames.includes(pokemon.name))
+    }
+
     return result;
-  }, [allPokemon, filters.nameQuery, filters.idQuery, filters.types, filters.regions, typeFilteredNames, typeNamesLoading]);
+  }, 
+  [
+    allPokemon, 
+    filters.nameQuery, 
+    filters.idQuery, 
+    filters.types, 
+    filters.regions, 
+    filters.move,
+    typeFilteredNames, 
+    moveFilteredNames,
+    typeNamesLoading
+  ]);
 
   const filteredNamesKey = useMemo(
     () => filteredList.map(p => p.name).join(","), // stable string
