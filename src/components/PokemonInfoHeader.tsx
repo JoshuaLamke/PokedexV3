@@ -11,7 +11,6 @@ import startCase from "lodash/startCase";
 import { useEffect } from "react";
 import Breadcrumbs, { Breadcrumb } from "./Breadcrumbs";
 import { useLocation } from "react-router-dom";
-import { useAllPokemonList } from "../pokemonData/useAllPokemonList";
 import { usePokemonDetail } from "../pokemonData/usePokemonDetail";
 
 interface Props {
@@ -19,6 +18,7 @@ interface Props {
   speciesData: SpeciesDetails;
   setFlavText: React.Dispatch<React.SetStateAction<string>>;
   setVersion: React.Dispatch<React.SetStateAction<string>>;
+  pokemonList: { name: string; id: number }[];
 }
 
 const PokemonInfoHeader = ({
@@ -26,10 +26,10 @@ const PokemonInfoHeader = ({
   speciesData,
   setFlavText,
   setVersion,
+  pokemonList,
 }: Props) => {
   const handleNavigate = useNavigateSmooth();
   const location = useLocation();
-  const { data: pokemonList } = useAllPokemonList();
 
   const engTextEntries = speciesData.flavor_text_entries.filter(
     (entry) => entry.language.name === "en"
@@ -50,20 +50,19 @@ const PokemonInfoHeader = ({
     setVersion(engTextEntries[0].version.name);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const pokemonIndex = pokemonList!.findIndex(
-    (pokemon) => pokemon.id === pokemonData.id
-  );
+  const pokemonIndex =
+    pokemonList.findIndex((pokemon) => pokemon.id === pokemonData.id) ?? 0;
   const prevPokemonIndex =
-    pokemonIndex - 1 < 0 ? pokemonList!.length - 1 : pokemonIndex - 1;
+    pokemonIndex - 1 < 0 ? pokemonList.length - 1 : pokemonIndex - 1;
   const nextPokemonIndex =
-    pokemonIndex + 1 >= pokemonList!.length ? 0 : pokemonIndex + 1;
+    pokemonIndex + 1 >= pokemonList.length ? 0 : pokemonIndex + 1;
 
   const { data: prevPokemon } = usePokemonDetail(
-    pokemonList?.[prevPokemonIndex].id
+    pokemonList[prevPokemonIndex].id
   );
 
   const { data: nextPokemon } = usePokemonDetail(
-    pokemonList?.[nextPokemonIndex].id
+    pokemonList[nextPokemonIndex].id
   );
 
   if (!prevPokemon || !nextPokemon) {

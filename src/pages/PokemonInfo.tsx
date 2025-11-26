@@ -23,10 +23,12 @@ import ClassTypesSection from "../components/ClassTypesSection";
 import FormsSection from "../components/FormsSection";
 import MovesSection from "../components/MovesSection";
 import TypeIcon from "../components/TypeIcon";
+import { useAllPokemonList } from "../pokemonData/useAllPokemonList";
 
 const PokemonInfo = () => {
   const { name } = useParams();
   const { data } = usePokemonInfo(name!);
+  const { data: pokemonList } = useAllPokemonList();
   const { data: speciesData } = useSpeciesInfo(data?.species.url, name!);
   const { data: evoData } = useEvoInfo(
     speciesData?.evolution_chain?.url,
@@ -35,7 +37,7 @@ const PokemonInfo = () => {
   const [flavText, setFlavText] = useState("");
   const [version, setVersion] = useState("");
 
-  if (!data || !speciesData || !evoData) {
+  if (!data || !speciesData || !evoData || !pokemonList) {
     return <LoadingSnom />;
   }
 
@@ -46,6 +48,7 @@ const PokemonInfo = () => {
         setFlavText={setFlavText}
         setVersion={setVersion}
         speciesData={speciesData}
+        pokemonList={pokemonList}
       />
       <div className="flex flex-col-reverse sm:flex-row">
         <div className="w-full sm:w-5/12 flex-col items-center">
