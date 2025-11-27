@@ -7,10 +7,16 @@ interface Props {
   data: TypeDetails;
 }
 const TypePokemonSection = ({ data }: Props) => {
-  const { cards, fetchNextPage, hasNextPage, isFetching, filteredCount } =
-    useCards({
-      types: [data.name],
-    });
+  const {
+    cards,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    filteredCount,
+    isLoading,
+  } = useCards({
+    types: [data.name],
+  });
 
   return (
     <div className="mt-5 flex flex-col items-center">
@@ -25,6 +31,7 @@ const TypePokemonSection = ({ data }: Props) => {
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
         isFetching={isFetching}
+        isLoading={isLoading}
       />
     </div>
   );

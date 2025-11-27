@@ -1,7 +1,6 @@
 import useCards from "../pokemonData/useCards";
 import { MoveDetails } from "../types";
 import CardContainer from "./CardContainer";
-import LoadingSnom from "./LoadingSnom";
 
 interface Props {
   data: MoveDetails;
@@ -18,10 +17,6 @@ const MovePokemonSection = ({ data }: Props) => {
     move: data.name,
   });
 
-  if (isLoading) {
-    return <LoadingSnom />;
-  }
-
   return (
     <div className="mt-5 flex flex-col items-center">
       <h3 className="text-3xl sm:text-4xl md:text:5xl">Learned By</h3>
@@ -33,6 +28,7 @@ const MovePokemonSection = ({ data }: Props) => {
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
         isFetching={isFetching}
+        isLoading={isLoading}
       />
     </div>
   );

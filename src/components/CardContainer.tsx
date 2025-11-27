@@ -8,6 +8,7 @@ interface Props {
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetching: boolean;
+  isLoading: boolean;
 }
 
 const CardContainer = ({
@@ -15,6 +16,7 @@ const CardContainer = ({
   fetchNextPage,
   hasNextPage,
   isFetching,
+  isLoading,
 }: Props) => {
   const ref = useRef<HTMLElement>(null);
 
@@ -31,7 +33,7 @@ const CardContainer = ({
     }
   }, [entry, hasNextPage, isFetching, fetchNextPage, cards]);
 
-  if (!cards.length) {
+  if (!cards.length && !isLoading) {
     return (
       <h1 className="text-3xl text-green-700 w-full text-center">
         No Pokémon found.
@@ -49,9 +51,9 @@ const CardContainer = ({
           <PokemonCard card={card} />
         </div>
       ))}
-      {isFetching && (
+      {(isFetching || isLoading) && (
         <div className="col-span-full text-center py-4 text-gray-700">
-          Loading more Pokémon...
+          Loading Pokémon...
         </div>
       )}
     </div>

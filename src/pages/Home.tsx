@@ -39,7 +39,7 @@ const Home = () => {
     filters.types.length === 0;
 
   const loading = isLoading || isFetching;
-  const noResults = !cards.length && !loading;
+  const noResults = !cards.length && !loading && !isFetching;
 
   return (
     <>
@@ -95,6 +95,7 @@ const Home = () => {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetching={isFetching}
+          isLoading={isLoading}
         />
       )}
 
